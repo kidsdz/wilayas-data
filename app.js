@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-  console.log("js loaded");
 
   /* ===============================
      الولايات
