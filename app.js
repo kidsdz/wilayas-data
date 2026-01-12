@@ -1,3 +1,4 @@
+var GOOGLE_SHEET_URL = "https://script.google.com/macros/s/XXXXXXXX/exec";
 document.addEventListener("DOMContentLoaded", function () {
 
   /* ===============================
@@ -99,36 +100,59 @@ document.addEventListener("DOMContentLoaded", function () {
 /* ===============================
    إرسال الطلب واتساب
    =============================== */
-function sendOrder(num, age) {
+function sendOrder(num, price, age) {
+
   var name = document.getElementById("name" + num).value.trim();
   var phone = document.getElementById("phone" + num).value.trim();
-  var wilayaSel = document.getElementById("wilaya" + num);
+  var wilayaSelect = document.getElementById("wilaya" + num);
   var baladiya = document.getElementById("baladiya" + num).value;
   var msg = document.getElementById("msg" + num);
 
-  if (!name || !phone || !wilayaSel.value || !baladiya) {
+  // 1️⃣ تحقق من الحقول
+  if (!name || !phone || !wilayaSelect.value || !baladiya) {
     msg.textContent = "يرجى ملء جميع الحقول";
+    msg.style.color = "red";
     return;
   }
 
-  var wilaya = wilayaSel.options[wilayaSel.selectedIndex].text;
-  var delivery = DELIVERY_PRICES[wilayaSel.value] || 0;
-  var basePrice = num === 1 ? 3200 : 2900;
-  var total = basePrice + delivery;
+  var wilaya = wilayaSelect.options[wilayaSelect.selectedIndex].text;
 
+  var data = {
+    name: name,
+    phone: phone,
+    product: "Kids DZ",
+    age: age,
+    wilaya: wilaya,
+    baladiya: baladiya,
+    price: price
+  };
+
+  // 2️⃣ إرسال إلى Google Sheet (هنا بالضبط 👇)
+  fetch(GOOGLE_SHEET_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+
+  // 3️⃣ إرسال واتساب
   var text =
-    "📦 طلب جديد\n" +
-    "👤 الاسم: " + name + "\n" +
-    "📞 الهاتف: " + phone + "\n" +
-    "🎂 العمر: " + age + "\n" +
-    "📍 الولاية: " + wilaya + "\n" +
-    "🏘️ البلدية: " + baladiya + "\n" +
-    "🚚 التوصيل: " + delivery + " دج\n" +
-    "💰 المجموع: " + total + " دج";
+    "طلب جديد\n" +
+    "الاسم: " + name + "\n" +
+    "الهاتف: " + phone + "\n" +
+    "العمر: " + age + "\n" +
+    "الولاية: " + wilaya + "\n" +
+    "البلدية: " + baladiya + "\n" +
+    "السعر: " + price + " دج";
 
-  var url =
-    "https://wa.me/213XXXXXXXXX?text=" +
-    encodeURIComponent(text);
+  window.open(
+    "https://wa.me/213XXXXXXXXX?text=" + encodeURIComponent(text),
+    "_blank"
+  );
 
-  window.open(url, "_blank");
-     }
+  // 4️⃣ رسالة نجاح
+  msg.style.color = "green";
+  msg.textContent = "تم إرسال الطلب بنجاح ✔️";
+    }
