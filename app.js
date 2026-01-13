@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
   /* ===============================
      البلديات
      =============================== */
-  var BALADIYAT = [
+   const baladiyat = [
  {
     wilayaId: "01",
     name: "أدرار"
@@ -47,6 +47,15 @@ document.addEventListener("DOMContentLoaded", function () {
   },
   ];
 
+function convertStringToNumber(arr, key) {
+  return arr.map(item => ({
+    ...item,
+    [key]: Number(item[key])
+  }));
+}
+
+const result = convertStringToNumber(baladiyat, "baladiyaId");
+console.log(result);
   /* ===============================
      تحميل الولايات
      =============================== */
