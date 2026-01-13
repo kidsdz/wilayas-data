@@ -180,7 +180,14 @@ function sendOrder(num, price, age) {
   };
 
   // 2️⃣ إرسال إلى Google Sheet (هنا بالضبط 👇)
-
+    fetch(GOOGLE_SHEET_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
   // 3️⃣ إرسال واتساب
   var text =
     "طلب جديد\n" +
