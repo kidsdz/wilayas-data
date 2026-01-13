@@ -181,16 +181,6 @@ function sendOrder(num, price, age) {
 
   // 2️⃣ إرسال إلى Google Sheet (هنا بالضبط 👇)
 
-   fetch(GOOGLE_SHEET_URL, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(data)
-})
-.then(res => res.json())
-.then(res => console.log("Saved:", res))
-.catch(err => console.error("Error:", err));
   // 3️⃣ إرسال واتساب
   var text =
     "طلب جديد\n" +
