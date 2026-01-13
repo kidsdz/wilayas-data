@@ -33,13 +33,17 @@ document.addEventListener("DOMContentLoaded", function () {
      البلديات
      =============================== */
   var BALADIYAT = [
-  {
-    commune_name: "أولاد أحمد تيمي",
-    wilaya_code: "01"
+ {
+    wilayaId: "01",
+    name: "أدرار"
   },
   {
-    commune_name: "رقان",
-    wilaya_code: "01"
+    wilayaId: "01",
+    name: "بودة"
+  },
+  {
+    wilayaId: "01",
+    name: "أولاد أحمد تيمي"
   },
   ];
 
