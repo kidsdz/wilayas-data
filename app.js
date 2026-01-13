@@ -34,15 +34,15 @@ document.addEventListener("DOMContentLoaded", function () {
      =============================== */
     var baladiyat = [
  {
-    wilayaId: 1,
+    wilayaId: 01,
     name: "أدرار"
   },
   {
-    wilayaId: 1,
+    wilayaId: 01,
     name: "بودة"
   },
   {
-    wilayaId: 1,
+    wilayaId: 01,
     name: "أولاد أحمد تيمي"
   },
   ];
