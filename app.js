@@ -181,15 +181,17 @@ function sendOrder(num, price, age) {
   };
 
   // 2️⃣ إرسال إلى Google Sheet (هنا بالضبط 👇)
-  fetch(GOOGLE_SHEET_URL, {
-    method: "POST",
-    mode: "no-cors",
-    body: JSON.stringify(data),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
 
+   fetch(GOOGLE_SHEET_URL, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(data)
+})
+.then(res => res.json())
+.then(res => console.log("Saved:", res))
+.catch(err => console.error("Error:", err));
   // 3️⃣ إرسال واتساب
   var text =
     "طلب جديد\n" +
@@ -209,4 +211,4 @@ function sendOrder(num, price, age) {
   msg.style.color = "green";
   msg.textContent = "تم إرسال الطلب بنجاح ✔️";
     }
-  console.log(result);
+  console.log("Order script loaded successfully");
