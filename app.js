@@ -33,18 +33,54 @@ document.addEventListener("DOMContentLoaded", function () {
      البلديات
      =============================== */
     var BALADIYAT = [
- {
-    wilayaId: "01",
-    name: "أدرار"
-  },
-  {
-    wilayaId: "01",
-    name: "بودة"
-  },
-  {
-    wilayaId: "01",
-    name: "أولاد أحمد تيمي"
-  }
+  { wilayaId: 5, name: "باتنة" },
+  { wilayaId: 5, name: "غسيرة" },
+  { wilayaId: 5, name: "معافة" },
+  { wilayaId: 5, name: "سريانة" },
+  { wilayaId: 5, name: "منعة" },
+  { wilayaId: 5, name: "المعذر" },
+  { wilayaId: 5, name: "تازولت" },
+  { wilayaId: 5, name: "نقاوس" },
+  { wilayaId: 5, name: "إينوغيسن" },
+  { wilayaId: 5, name: "عيون العصافير" },
+  { wilayaId: 5, name: "جرمة" },
+  { wilayaId: 5, name: "بيطام" },
+  { wilayaId: 5, name: "أريس" },
+  { wilayaId: 5, name: "بومية" },
+  { wilayaId: 5, name: "مرانة" },
+  { wilayaId: 5, name: "تيمقاد" },
+  { wilayaId: 5, name: "رأس العيون" },
+  { wilayaId: 5, name: "شير" },
+  { wilayaId: 5, name: "أولاد سلام" },
+  { wilayaId: 5, name: "تيغرغار" },
+  { wilayaId: 5, name: "عين جاسر" },
+  { wilayaId: 5, name: "الحاسي" },
+  { wilayaId: 5, name: "لازرو" },
+  { wilayaId: 5, name: "فم الطوب" },
+  { wilayaId: 5, name: "إشمول" },
+  { wilayaId: 5, name: "فيسديس" },
+  { wilayaId: 5, name: "القصبات" },
+  { wilayaId: 5, name: "سقانة" },
+  { wilayaId: 5, name: "بوزينة" },
+  { wilayaId: 5, name: "وادي الشعبة" },
+  { wilayaId: 5, name: "تاكسلانت" },
+  { wilayaId: 5, name: "إمدوكل" },
+  { wilayaId: 5, name: "أولاد عمار" },
+  { wilayaId: 5, name: "الجزار" },
+  { wilayaId: 5, name: "تكوت" },
+  { wilayaId: 5, name: "عين التوتة" },
+  { wilayaId: 5, name: "حيدوسة" },
+  { wilayaId: 5, name: "ثنية العابد" },
+  { wilayaId: 5, name: "وادي الماء" },
+  { wilayaId: 5, name: "تالخمت" },
+  { wilayaId: 5, name: "بولهيلات" },
+  { wilayaId: 5, name: "لاوادي" },
+  { wilayaId: 5, name: "لارباع" },
+  { wilayaId: 5, name: "بولهيلات" },
+  { wilayaId: 5, name: "أولاد فاضل" },
+  { wilayaId: 5, name: "سفيان" },
+  { wilayaId: 5, name: "رحبات" }
+    
   ];
 
   /* ===============================
