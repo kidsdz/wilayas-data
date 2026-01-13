@@ -209,3 +209,4 @@ function sendOrder(num, price, age) {
   msg.style.color = "green";
   msg.textContent = "تم إرسال الطلب بنجاح ✔️";
     }
+  console.log(result);
