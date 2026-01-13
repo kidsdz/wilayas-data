@@ -32,30 +32,21 @@ document.addEventListener("DOMContentLoaded", function () {
   /* ===============================
      البلديات
      =============================== */
-   const baladiyat = [
+    var baladiyat = [
  {
-    wilayaId: "01",
+    wilayaId: 1,
     name: "أدرار"
   },
   {
-    wilayaId: "01",
+    wilayaId: 1,
     name: "بودة"
   },
   {
-    wilayaId: "01",
+    wilayaId: 1,
     name: "أولاد أحمد تيمي"
   },
   ];
 
-function convertStringToNumber(arr, key) {
-  return arr.map(item => ({
-    ...item,
-    [key]: Number(item[key])
-  }));
-}
-
-const result = convertStringToNumber(baladiyat, "baladiyaId");
-console.log(result);
   /* ===============================
      تحميل الولايات
      =============================== */
