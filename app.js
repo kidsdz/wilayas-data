@@ -1,4 +1,4 @@
-var GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzJPOpVY_X1LaAxwuXlMIXhP63h-y6DLMVVxo0nNGq2vOe83cUBSnwFs16qaQr5LXTGSw/exec";
+var GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbxpiCjTkWsYlWTBofmoIFLLUdh9g_YTLaijbcD5xl98540SlUMcbLpvxy-Oh4ODS7lIGA/exec";
 document.addEventListener("DOMContentLoaded", function () {
 
   /* ===============================
@@ -181,13 +181,20 @@ function sendOrder(num, price, age) {
 
   // 2️⃣ إرسال إلى Google Sheet (هنا بالضبط 👇)
     fetch(GOOGLE_SHEET_URL, {
-    method: "POST",
-    mode: "no-cors",
-    body: JSON.stringify(data),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(data)
+})
+.then(res => res.json())
+.then(res => {
+  console.log("Saved to sheet:", res);
+})
+.catch(err => {
+  console.error("Sheet error:", err);
+});
+  
   // 3️⃣ إرسال واتساب
   var text =
     "طلب جديد\n" +
@@ -199,12 +206,12 @@ function sendOrder(num, price, age) {
     "السعر: " + price + " دج";
 
   window.open(
-    "https://wa.me/213XXXXXXXXX?text=" + encodeURIComponent(text),
+   // 4️⃣ رسالة نجاح
+  msg.style.color = "green";
+  msg.textContent = "تم إرسال الطلب بنجاح ✔️";
+}
+    "https://wa.me/213792095972?text=" + encodeURIComponent(text),
     "_blank"
   );
 
-  // 4️⃣ رسالة نجاح
-  msg.style.color = "green";
-  msg.textContent = "تم إرسال الطلب بنجاح ✔️";
-    }
   console.log("app.js loaded successfully");
