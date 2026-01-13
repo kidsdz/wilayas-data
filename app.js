@@ -39,6 +39,15 @@ document.addEventListener("DOMContentLoaded", function () {
     { wilayaId: 31, name: "أرزيو" },
     { wilayaId: 25, name: "الخروب" },
     { wilayaId: 25, name: "عين سمارة" }
+  },
+  {
+    commune_name: "أولاد أحمد تيمي",
+    wilaya_code: "01"
+  },
+  {
+    commune_name: "رقان",
+    wilaya_code: "01"
+  },
   ];
 
   /* ===============================
