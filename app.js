@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
   /* ===============================
      البلديات
      =============================== */
-    var baladiyat = [
+    var BALADIYAT = [
  {
     wilayaId: 01,
     name: "أدرار"
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
   {
     wilayaId: 01,
     name: "أولاد أحمد تيمي"
-  },
+  }
   ];
 
   /* ===============================
