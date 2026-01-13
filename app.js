@@ -206,12 +206,12 @@ function sendOrder(num, price, age) {
     "السعر: " + price + " دج";
 
   window.open(
-   // 4️⃣ رسالة نجاح
-  msg.style.color = "green";
-  msg.textContent = "تم إرسال الطلب بنجاح ✔️";
-}
+
     "https://wa.me/213792095972?text=" + encodeURIComponent(text),
     "_blank"
   );
-
+   // 4️⃣ رسالة نجاح
+  msg.style.color = "green";
+  msg.textContent = "تم إرسال الطلب بنجاح ✔️";
+      }
   console.log("app.js loaded successfully");
