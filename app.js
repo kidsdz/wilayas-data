@@ -100,59 +100,60 @@ document.addEventListener("DOMContentLoaded", function () {
 /* ===============================
    إرسال الطلب واتساب
    =============================== */
-function sendOrder(num, price, age) {
 
-  var name = document.getElementById("name" + num).value.trim();
-  var phone = document.getElementById("phone" + num).value.trim();
-  var wilayaSelect = document.getElementById("wilaya" + num);
-  var baladiya = document.getElementById("baladiya" + num).value;
-  var msg = document.getElementById("msg" + num);
+function sendOrder(id, price, age) {
 
-  // 1️⃣ تحقق من الحقول
-  if (!name || !phone || !wilayaSelect.value || !baladiya) {
-    msg.textContent = "يرجى ملء جميع الحقول";
-    msg.style.color = "red";
+  const name = document.getElementById("name" + id).value.trim();
+  const phone = document.getElementById("phone" + id).value.trim();
+  const wilaya = document.getElementById("wilaya" + id).value;
+  const baladiya = document.getElementById("baladiya" + id).value;
+  const msgBox = document.getElementById("msg" + id);
+
+  // 🛑 تحقق من البيانات
+  if (!name || !phone) {
+    msgBox.innerHTML = "❌ الرجاء إدخال الاسم ورقم الهاتف";
+    msgBox.style.color = "red";
     return;
   }
 
-  var wilaya = wilayaSelect.options[wilayaSelect.selectedIndex].text;
+  msgBox.innerHTML = "⏳ جاري إرسال الطلب...";
+  msgBox.style.color = "black";
 
-  var data = {
+  const data = {
     name: name,
     phone: phone,
-    product: "Kids DZ",
-    age: age,
     wilaya: wilaya,
     baladiya: baladiya,
-    price: price
+    product: "ملابس أطفال",
+    age: age,
+    price: price,
+    pay: "الدفع عند الاستلام"
   };
 
-  // 2️⃣ إرسال إلى Google Sheet (هنا بالضبط 👇)
-  fetch(GOOGLE_SHEET_URL, {
+  fetch(WEB_APP_URL, {
     method: "POST",
-    mode: "no-cors",
-    body: JSON.stringify(data),
     headers: {
       "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(r => {
+    if (r.status === "success") {
+      msgBox.innerHTML = "✅ تم تسجيل الطلبية بنجاح";
+      msgBox.style.color = "green";
+
+      // تنظيف الحقول
+      document.getElementById("name" + id).value = "";
+      document.getElementById("phone" + id).value = "";
+    } else {
+      msgBox.innerHTML = "❌ حدث خطأ، حاول مرة أخرى";
+      msgBox.style.color = "red";
     }
+  })
+  .catch(err => {
+    msgBox.innerHTML = "⚠️ فشل الاتصال، افتح الصفحة في المتصفح";
+    msgBox.style.color = "red";
+    console.error(err);
   });
-
-  // 3️⃣ إرسال واتساب
-  var text =
-    "طلب جديد\n" +
-    "الاسم: " + name + "\n" +
-    "الهاتف: " + phone + "\n" +
-    "العمر: " + age + "\n" +
-    "الولاية: " + wilaya + "\n" +
-    "البلدية: " + baladiya + "\n" +
-    "السعر: " + price + " دج";
-
-  window.open(
-    "https://wa.me/213XXXXXXXXX?text=" + encodeURIComponent(text),
-    "_blank"
-  );
-
-  // 4️⃣ رسالة نجاح
-  msg.style.color = "green";
-  msg.textContent = "تم إرسال الطلب بنجاح ✔️";
-                          }
+                                         }
