@@ -1,4 +1,4 @@
-var GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbytnbr_qQBna6xIjFB4v_RCo48na1qIZIBZbPY7e61uvNke5Ye2hUwnqWbprqAu8qEm/exec";
+var const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbytnbr_qQBna6xIjFB4v_RCo48na1qIZIBZbPY7e61uvNke5Ye2hUwnqWbprqAu8qEm/exec";
 document.addEventListener("DOMContentLoaded", function () {
 
   /* ===============================
@@ -156,4 +156,4 @@ function sendOrder(id, price, age) {
     msgBox.style.color = "red";
     console.error(err);
   });
-                                         
+        }                             
