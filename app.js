@@ -1,5 +1,5 @@
 console.log("JS loaded");
-var GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwn7Ww6rSPEFV8C4wUQNvLXo5jEx7ja-eImts1FtDrsHyuKnx6a0dCEzhs6D02LVLS5mw/exec";
+var GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzJPOpVY_X1LaAxwuXlMIXhP63h-y6DLMVVxo0nNGq2vOe83cUBSnwFs16qaQr5LXTGSw/exec";
 document.addEventListener("DOMContentLoaded", function () {
 
 /* ===============================
