@@ -84,112 +84,110 @@ var BALADIYAT = [
 
 ];
 
-/* ===============================
-تحميل الولايات
-=============================== */
+
+// ===============================
+// DOM READY
+// ===============================
+document.addEventListener("DOMContentLoaded", function () {
+  bindProduct(1, 3200);
+  bindProduct(2, 2900);
+});
+
+// ===============================
+// HELPERS
+// ===============================
 function fillWilayas(select) {
-select.innerHTML = '<option value="">اختر الولاية</option>';
-for (var code in WILAYAS) {
-var opt = document.createElement("option");
-opt.value = code;
-opt.textContent = WILAYAS[code];
-select.appendChild(opt);
-}
-}
-
-/* ===============================
-حساب المجموع
-=============================== */
-function calcTotal(wilayaCode, basePrice, box) {
-var delivery = DELIVERY_PRICES[wilayaCode] || 0;
-var total = basePrice + delivery;
-box.textContent = "المجموع: " + total + " دج";
+  select.innerHTML = '<option value="">اختر الولاية</option>';
+  for (var code in WILAYAS) {
+    var opt = document.createElement("option");
+    opt.value = code;
+    opt.textContent = WILAYAS[code];
+    select.appendChild(opt);
+  }
 }
 
-/* ===============================
-ربط منتج
-=============================== */
 function bindProduct(num, basePrice) {
-var wilaya = document.getElementById("wilaya" + num);
-var baladiya = document.getElementById("baladiya" + num);
-var msg = document.getElementById("msg" + num);
+  var wilaya = document.getElementById("wilaya" + num);
+  var baladiya = document.getElementById("baladiya" + num);
+  var msg = document.getElementById("msg" + num);
 
-fillWilayas(wilaya);  
+  fillWilayas(wilaya);
 
-wilaya.addEventListener("change", function () {  
-  baladiya.innerHTML = '<option value="">اختر البلدية</option>';  
-  msg.textContent = "";  
+  wilaya.addEventListener("change", function () {
+    baladiya.innerHTML = '<option value="">اختر البلدية</option>';
+    msg.textContent = "";
 
-  if (!this.value) return;  
+    BALADIYAT.forEach(function (b) {
+      if (b.wilayaId === parseInt(wilaya.value)) {
+        var opt = document.createElement("option");
+        opt.value = b.name;
+        opt.textContent = b.name;
+        baladiya.appendChild(opt);
+      }
+    });
 
-  BALADIYAT.forEach(function (b) {  
-    if (b.wilayaId === parseInt(wilaya.value)) {  
-      var opt = document.createElement("option");  
-      opt.value = b.name;  
-      opt.textContent = b.name;  
-      baladiya.appendChild(opt);  
-    }  
-  });  
+    var delivery = DELIVERY_PRICES[wilaya.value] || 0;
+    if (delivery) {
+      msg.textContent =
+        "سعر التوصيل: " + delivery +
+        " دج | المجموع: " + (basePrice + delivery) + " دج";
+    } else {
+      msg.textContent = "سعر التوصيل يُحدد عند الاتصال";
+    }
+  });
+  }
 
-  if (DELIVERY_PRICES[wilaya.value]) {  
-    msg.textContent =  
-      "سعر التوصيل: " + DELIVERY_PRICES[wilaya.value] +  
-      " دج | المجموع: " +  
-      (basePrice + DELIVERY_PRICES[wilaya.value]) + " دج";  
-  } else {  
-    msg.textContent = "سعر التوصيل يُحدد عند الاتصال";  
-  }  
-});
 
-}
 
-/* ===============================
-ربط المنتجين
-=============================== */
-bindProduct(1, 3200);
-bindProduct(2, 2900);
-
-});
-
-/* ===============================
-إرسال الطلب واتساب
-=============================== */
+// ===============================
+// SEND ORDER
+// ===============================
 function sendOrder(num, price, age) {
 
-var name = document.getElementById("name" + num).value.trim();
-var phone = document.getElementById("phone" + num).value.trim();
-var wilayaSelect = document.getElementById("wilaya" + num);
-var baladiya = document.getElementById("baladiya" + num).value;
-var msg = document.getElementById("msg" + num);
+  if (sendOrder.locked) return;
+  sendOrder.locked = true;
 
-// 1️⃣ تحقق من الحقول
-if (!name || !phone || !wilayaSelect.value || !baladiya) {
-msg.textContent = "يرجى ملء جميع الحقول";
-msg.style.color = "red";
-return;
-}
+  var name = document.getElementById("name" + num).value.trim();
+  var phone = document.getElementById("phone" + num).value.trim();
+  var wilayaSelect = document.getElementById("wilaya" + num);
+  var baladiya = document.getElementById("baladiya" + num).value;
+  var msg = document.getElementById("msg" + num);
 
-var wilaya = wilayaSelect.options[wilayaSelect.selectedIndex].text;
+  if (!name || !phone || !wilayaSelect.value || !baladiya) {
+    msg.style.color = "red";
+    msg.textContent = "يرجى ملء جميع الحقول";
+    sendOrder.locked = false;
+    return;
+  }
 
-var data = {
-name: name,
-phone: phone,
-product: "Kids DZ",
-age: age,
-wilaya: wilaya,
-baladiya: baladiya,
-price: price
-};
+  var wilayaCode = wilayaSelect.value;
+  var wilayaName = wilayaSelect.options[wilayaSelect.selectedIndex].text;
+  var delivery = DELIVERY_PRICES[wilayaCode] || 0;
+  var totalPrice = price + delivery;[wilayaSelect.selectedIndex].text;
 
+
+  var data = {
+    name,
+    phone,
+    product: "Kids DZ",
+    age,
+    wilaya: wilayaName,
+    baladiya,
+    price: totalPrice
+  };
+
+
+  // رسالة نجاح (قبل أي redirect)
+  msg.style.color = "green";
+  msg.textContent = "تم إرسال الطلب بنجاح ✔️";
 // 2️⃣ إرسال إلى Google Sheet (هنا بالضبط 👇)
-fetch(GOOGLE_SHEET_URL, {
-method: "POST",
-mode: "no-cors",
-body: JSON.stringify(data),
-headers: {
-"Content-Type": "application/json"
-}
-});
+try {
+    fetch(GOOGLE_SHEET_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    }).catch(() => {});
+  } catch (e) {}
 
 // 3️⃣ إرسال واتساب
 var text =
@@ -201,13 +199,11 @@ var text =
 "البلدية: " + baladiya + "\n" +
 "السعر: " + price + " دج";
 
-window.open(
-"https://wa.me/213XXXXXXXXX?text=" + encodeURIComponent(text),
-"_blank"
-);
-
-// 4️⃣ رسالة نجاح
-msg.style.color = "green";
-msg.textContent = "تم إرسال الطلب بنجاح ✔️";
+setTimeout(function () {
+    window.open(
+      "https://wa.me/213792095972?text=" + encodeURIComponent(text),
+      "_blank"
+    );
+    sendOrder.locked = false;
+  }, 300);
   }
-  
