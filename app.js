@@ -104,7 +104,7 @@ function fillWilayas(select) {
     opt.textContent = WILAYAS[code];
     select.appendChild(opt);
   }
-}
+
 
 function bindProduct(num, basePrice) {
   var wilaya = document.getElementById("wilaya" + num);
