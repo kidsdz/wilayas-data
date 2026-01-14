@@ -1,6 +1,6 @@
 console.log("JS loaded");
-var GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwmk26IbtvG_VLh-aukKcjVJ7egAzPr2SIyGYeMd3hGC7FcMTae2PKtGGecEr7gI8FE/exec";
-
+var GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzJPOpVY_X1LaAxwuXlMIXhP63h-y6DLMVVxo0nNGq2vOe83cUBSnwFs16qaQr5LXTGSw/exec";
+document.addEventListener("DOMContentLoaded", function () {
 
 /* ===============================
 الولايات
@@ -84,110 +84,112 @@ var BALADIYAT = [
 
 ];
 
+/* ===============================
+تحميل الولايات
+=============================== */
+function fillWilayas(select) {
+select.innerHTML = '<option value="">اختر الولاية</option>';
+for (var code in WILAYAS) {
+var opt = document.createElement("option");
+opt.value = code;
+opt.textContent = WILAYAS[code];
+select.appendChild(opt);
+}
+}
 
-// ===============================
-// DOM READY
-// ===============================
-document.addEventListener("DOMContentLoaded", function () {
-  bindProduct(1, 3200);
-  bindProduct(2, 2900);
+/* ===============================
+حساب المجموع
+=============================== */
+function calcTotal(wilayaCode, basePrice, box) {
+var delivery = DELIVERY_PRICES[wilayaCode] || 0;
+var total = basePrice + delivery;
+box.textContent = "المجموع: " + total + " دج";
+}
+
+/* ===============================
+ربط منتج
+=============================== */
+function bindProduct(num, basePrice) {
+var wilaya = document.getElementById("wilaya" + num);
+var baladiya = document.getElementById("baladiya" + num);
+var msg = document.getElementById("msg" + num);
+
+fillWilayas(wilaya);  
+
+wilaya.addEventListener("change", function () {  
+  baladiya.innerHTML = '<option value="">اختر البلدية</option>';  
+  msg.textContent = "";  
+
+  if (!this.value) return;  
+
+  BALADIYAT.forEach(function (b) {  
+    if (b.wilayaId === parseInt(wilaya.value)) {  
+      var opt = document.createElement("option");  
+      opt.value = b.name;  
+      opt.textContent = b.name;  
+      baladiya.appendChild(opt);  
+    }  
+  });  
+
+  if (DELIVERY_PRICES[wilaya.value]) {  
+    msg.textContent =  
+      "سعر التوصيل: " + DELIVERY_PRICES[wilaya.value] +  
+      " دج | المجموع: " +  
+      (basePrice + DELIVERY_PRICES[wilaya.value]) + " دج";  
+  } else {  
+    msg.textContent = "سعر التوصيل يُحدد عند الاتصال";  
+  }  
 });
 
-// ===============================
-// HELPERS
-// ===============================
-function fillWilayas(select) {
-  select.innerHTML = '<option value="">اختر الولاية</option>';
-  for (var code in WILAYAS) {
-    var opt = document.createElement("option");
-    opt.value = code;
-    opt.textContent = WILAYAS[code];
-    select.appendChild(opt);
-  }
+}
 
+/* ===============================
+ربط المنتجين
+=============================== */
+bindProduct(1, 3200);
+bindProduct(2, 2900);
 
-function bindProduct(num, basePrice) {
-  var wilaya = document.getElementById("wilaya" + num);
-  var baladiya = document.getElementById("baladiya" + num);
-  var msg = document.getElementById("msg" + num);
+});
 
-  fillWilayas(wilaya);
-
-  wilaya.addEventListener("change", function () {
-    baladiya.innerHTML = '<option value="">اختر البلدية</option>';
-    msg.textContent = "";
-
-    BALADIYAT.forEach(function (b) {
-      if (b.wilayaId === parseInt(wilaya.value)) {
-        var opt = document.createElement("option");
-        opt.value = b.name;
-        opt.textContent = b.name;
-        baladiya.appendChild(opt);
-      }
-    });
-
-    var delivery = DELIVERY_PRICES[wilaya.value] || 0;
-    if (delivery) {
-      msg.textContent =
-        "سعر التوصيل: " + delivery +
-        " دج | المجموع: " + (basePrice + delivery) + " دج";
-    } else {
-      msg.textContent = "سعر التوصيل يُحدد عند الاتصال";
-    }
-  });
-  }
-
-
-
-// ===============================
-// SEND ORDER
-// ===============================
+/* ===============================
+إرسال الطلب واتساب
+=============================== */
 function sendOrder(num, price, age) {
 
-  if (sendOrder.locked) return;
-  sendOrder.locked = true;
+var name = document.getElementById("name" + num).value.trim();
+var phone = document.getElementById("phone" + num).value.trim();
+var wilayaSelect = document.getElementById("wilaya" + num);
+var baladiya = document.getElementById("baladiya" + num).value;
+var msg = document.getElementById("msg" + num);
 
-  var name = document.getElementById("name" + num).value.trim();
-  var phone = document.getElementById("phone" + num).value.trim();
-  var wilayaSelect = document.getElementById("wilaya" + num);
-  var baladiya = document.getElementById("baladiya" + num).value;
-  var msg = document.getElementById("msg" + num);
+// 1️⃣ تحقق من الحقول
+if (!name || !phone || !wilayaSelect.value || !baladiya) {
+msg.textContent = "يرجى ملء جميع الحقول";
+msg.style.color = "red";
+return;
+}
 
-  if (!name || !phone || !wilayaSelect.value || !baladiya) {
-    msg.style.color = "red";
-    msg.textContent = "يرجى ملء جميع الحقول";
-    sendOrder.locked = false;
-    return;
-  }
+var wilaya = wilayaSelect.options[wilayaSelect.selectedIndex].text;
 
-  var wilayaCode = wilayaSelect.value;
-  var wilayaName = wilayaSelect.options[wilayaSelect.selectedIndex].text;
-  var delivery = DELIVERY_PRICES[wilayaCode] || 0;
-  var totalPrice = price + delivery;[wilayaSelect.selectedIndex].text;
+var data = {
+name: name,
+phone: phone,
+product: "Kids DZ",
+age: age,
+wilaya: wilaya,
+baladiya: baladiya,
+price: price
+};
 
-
-  var data = {
-    name,
-    phone,
-    product: "Kids DZ",
-    age,
-    wilaya: wilayaName,
-    baladiya,
-    price: totalPrice
-  };
-
-
-  // رسالة نجاح (قبل أي redirect)
-  msg.style.color = "green";
-  msg.textContent = "تم إرسال الطلب بنجاح ✔️";
 // 2️⃣ إرسال إلى Google Sheet (هنا بالضبط 👇)
-try {
-    fetch(GOOGLE_SHEET_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    }).catch(() => {});
-  } catch (e) {}
+fetch(GOOGLE_SHEET_URL, {
+method: "POST",
+mode: "no-cors",
+body: JSON.stringify(data),
+headers: {
+"Content-Type": "application/json"
+}
+});
 
 // 3️⃣ إرسال واتساب
 var text =
@@ -199,11 +201,13 @@ var text =
 "البلدية: " + baladiya + "\n" +
 "السعر: " + price + " دج";
 
-setTimeout(function () {
-    window.open(
-      "https://wa.me/213792095972?text=" + encodeURIComponent(text),
-      "_blank"
-    );
-    sendOrder.locked = false;
-  }, 300);
+window.open(
+"https://wa.me/213XXXXXXXXX?text=" + encodeURIComponent(text),
+"_blank"
+);
+
+// 4️⃣ رسالة نجاح
+msg.style.color = "green";
+msg.textContent = "تم إرسال الطلب بنجاح ✔️";
   }
+ 
