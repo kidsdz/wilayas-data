@@ -1,4 +1,4 @@
-var GOOGLE_SHEET_URL = "https://script.google.com/macros/s/XXXXXXXX/exec";
+var GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzs8ltoWx8gLkn8SKHEfg4xMYQWYoB8fL93nESYlf4cD8CDv2UsUHbDy7mIpzz7kvtquA/exec";
 document.addEventListener("DOMContentLoaded", function () {
 
   /* ===============================
