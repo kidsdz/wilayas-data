@@ -156,4 +156,4 @@ function sendOrder(id, price, age) {
     msgBox.style.color = "red";
     console.error(err);
   });
-        }                             
+                               
