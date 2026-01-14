@@ -1,6 +1,6 @@
 console.log("JS loaded");
 var GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwmk26IbtvG_VLh-aukKcjVJ7egAzPr2SIyGYeMd3hGC7FcMTae2PKtGGecEr7gI8FE/exec";
-document.addEventListener("DOMContentLoaded", function () {
+
 
 /* ===============================
 الولايات
