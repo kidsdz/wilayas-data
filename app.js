@@ -141,7 +141,7 @@ wilaya.addEventListener("change", function () {
   }  
 });
 
-}
+
 
 /* ===============================
 ربط المنتجين
@@ -209,5 +209,5 @@ window.open(
 // 4️⃣ رسالة نجاح
 msg.style.color = "green";
 msg.textContent = "تم إرسال الطلب بنجاح ✔️";
-  }
+  
  
