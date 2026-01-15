@@ -72,11 +72,25 @@ const WEB_APP_URL =
 
     fillWilayas(wilaya);
 
-    wilaya.addEventListener("change", () => {
-      fillBaladiyat(wilaya, baladiya);
-      msg.textContent = "";
-      calcTotal(wilaya.value, basePrice, msg);
-    });
+wilaya.addEventListener("change", () => {
+
+  // تفريغ البلدية
+  baladiya.innerHTML = '<option value="">اختر البلدية</option>';
+
+  // حماية من القيم الفارغة
+  if (!wilaya.value) {
+    if (msg) msg.textContent = "";
+    return;
+  }
+
+  // تعبئة البلديات
+  fillBaladiyat(wilaya, baladiya);
+
+  // حساب السعر فقط إذا msg موجود
+  if (msg) {
+    calcTotal(wilaya.value, basePrice, msg);
+  }
+});
   }
 
   /* ===============================
