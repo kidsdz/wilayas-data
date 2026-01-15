@@ -68,7 +68,7 @@ const WEB_APP_URL =
     const baladiya = document.getElementById(`baladiya${num}`);
     const msg = document.getElementById(`msg${num}`);
 
-    if (!wilaya || !baladiya || !msg) return;
+    if (!wilaya || !baladiya) return;
 
     fillWilayas(wilaya);
 
