@@ -1,7 +1,7 @@
 console.log("JS loaded");
 const WEB_APP_URL =
   "https://script.google.com/macros/s/AKfycbytnbr_qQBna6xIjFB4v_RCo48na1qIZIBZbPY7e61uvNke5Ye2hUwnqWbprqAu8qEm/exec";
-
+   document.addEventListener("DOMContentLoaded", () => {
   /* ===============================
      البيانات (Data)
      =============================== */
