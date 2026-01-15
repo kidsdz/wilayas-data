@@ -1,28 +1,25 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbytnbr_qQBna6xIjFB4v_RCo48na1qIZIBZbPY7e61uvNke5Ye2hUwnqWbprqAu8qEm/exec";
-document.addEventListener("DOMContentLoaded", function () {
+const WEB_APP_URL =
+  "https://script.google.com/macros/s/AKfycbytnbr_qQBna6xIjFB4v_RCo48na1qIZIBZbPY7e61uvNke5Ye2hUwnqWbprqAu8qEm/exec";
+
+document.addEventListener("DOMContentLoaded", () => {
 
   /* ===============================
-     الولايات
+     البيانات (Data)
      =============================== */
-  var WILAYAS = {
-    "16": "الجزائر",
-    "31": "وهران",
-    "25": "قسنطينة"
+
+  const WILAYAS = {
+    16: "الجزائر",
+    31: "وهران",
+    25: "قسنطينة"
   };
 
-  /* ===============================
-     أسعار التوصيل
-     =============================== */
-  var DELIVERY_PRICES = {
-    "16": 400,
-    "31": 500,
-    "25": 500
+  const DELIVERY_PRICES = {
+    16: 400,
+    31: 500,
+    25: 500
   };
 
-  /* ===============================
-     البلديات
-     =============================== */
-  var BALADIYAT = [
+  const BALADIYAT = [
     { wilayaId: 16, name: "القصبة" },
     { wilayaId: 16, name: "باب الواد" },
     { wilayaId: 31, name: "السانية" },
@@ -32,71 +29,66 @@ document.addEventListener("DOMContentLoaded", function () {
   ];
 
   /* ===============================
-     تحميل الولايات
+     الدوال (Functions)
      =============================== */
+
   function fillWilayas(select) {
     select.innerHTML = '<option value="">اختر الولاية</option>';
-    for (var code in WILAYAS) {
-      var opt = document.createElement("option");
+
+    Object.keys(WILAYAS).forEach(code => {
+      const opt = document.createElement("option");
       opt.value = code;
       opt.textContent = WILAYAS[code];
       select.appendChild(opt);
-    }
+    });
   }
 
-  /* ===============================
-     حساب المجموع
-     =============================== */
+  function fillBaladiyat(wilayaSelect, baladiyaSelect) {
+    baladiyaSelect.innerHTML = '<option value="">اختر البلدية</option>';
+
+    if (!wilayaSelect.value) return;
+
+    BALADIYAT
+      .filter(b => b.wilayaId === Number(wilayaSelect.value))
+      .forEach(b => {
+        const opt = document.createElement("option");
+        opt.value = b.name;
+        opt.textContent = b.name;
+        baladiyaSelect.appendChild(opt);
+      });
+  }
+
   function calcTotal(wilayaCode, basePrice, box) {
-    var delivery = DELIVERY_PRICES[wilayaCode] || 0;
-    var total = basePrice + delivery;
-    box.textContent = "المجموع: " + total + " دج";
+    const delivery = DELIVERY_PRICES[wilayaCode] || 0;
+    const total = basePrice + delivery;
+    box.textContent = `المجموع: ${total} دج`;
   }
 
-  /* ===============================
-     ربط منتج
-     =============================== */
   function bindProduct(num, basePrice) {
-    var wilaya = document.getElementById("wilaya" + num);
-    var baladiya = document.getElementById("baladiya" + num);
-    var msg = document.getElementById("msg" + num);
+    const wilaya = document.getElementById(`wilaya${num}`);
+    const baladiya = document.getElementById(`baladiya${num}`);
+    const msg = document.getElementById(`msg${num}`);
+
+    if (!wilaya || !baladiya || !msg) return;
 
     fillWilayas(wilaya);
 
-    wilaya.addEventListener("change", function () {
-      baladiya.innerHTML = '<option value="">اختر البلدية</option>';
+    wilaya.addEventListener("change", () => {
+      fillBaladiyat(wilaya, baladiya);
       msg.textContent = "";
-
-      if (!this.value) return;
-
-      BALADIYAT.forEach(function (b) {
-        if (b.wilayaId === parseInt(wilaya.value)) {
-          var opt = document.createElement("option");
-          opt.value = b.name;
-          opt.textContent = b.name;
-          baladiya.appendChild(opt);
-        }
-      });
-
-      if (DELIVERY_PRICES[wilaya.value]) {
-        msg.textContent =
-          "سعر التوصيل: " + DELIVERY_PRICES[wilaya.value] +
-          " دج | المجموع: " +
-          (basePrice + DELIVERY_PRICES[wilaya.value]) + " دج";
-      } else {
-        msg.textContent = "سعر التوصيل يُحدد عند الاتصال";
-      }
+      calcTotal(wilaya.value, basePrice, msg);
     });
   }
 
   /* ===============================
-     ربط المنتجين
+     التشغيل (Init)
      =============================== */
-  bindProduct(1, 3200);
-  bindProduct(2, 2900);
+
+  bindProduct(1, 2500);
+  bindProduct(2, 3000);
+  // أضف منتجات أخرى هنا
 
 });
-
 /* ===============================
    إرسال الطلب واتساب
    =============================== */
@@ -156,4 +148,4 @@ function sendOrder(id, price, age) {
     msgBox.style.color = "red";
     console.error(err);
   });
-                               
+     }
