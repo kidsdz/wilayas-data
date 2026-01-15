@@ -4,7 +4,7 @@ console.log("JS loaded");
    رابط Google Apps Script
    =============================== */
 var WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbykVynzBf8U6AoB3CBa-EPo2Z16QjqD6XHmOcb24NNhs_7L66w_PcDdmsjkkb8Hbkcg/exec"; // لازم يكون رابط doGet
+    "https://script.google.com/macros/s/AKfycbykVynzBf8U6AoB3CBa-EPo2Z16QjqD6XHmOcb24NNhs_7L66w_PcDdmsjkkb8Hbkcg/exec"; // لازم يكون رابط doGet
 
 /* ===============================
    عند تحميل الصفحة
