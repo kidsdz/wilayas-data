@@ -4,7 +4,7 @@ console.log("JS loaded");
    رابط Google Apps Script
    =============================== */
 var WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbytnbr_qQBna6xIjFB4v_RCo48na1qIZIBZbPY7e61uvNke5Ye2hUwnqWbprqAu8qEm/exec";
+  "https://script.google.com/macros/s/AKfycbx_IB6deg8Qt574kSfgJs4OmDNFRVRnkkqxl4ilaVLYOEysF9CWTKW2Mpapg19bvS1s/exec"; // لازم يكون رابط doGet
 
 /* ===============================
    عند تحميل الصفحة
@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
   /* ===============================
      البيانات
      =============================== */
-
   var WILAYAS = {
     16: "الجزائر",
     31: "وهران",
@@ -51,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /* ===============================
-     ربط المنتج
+     ربط منتج
      =============================== */
   function bindProduct(num, basePrice) {
     var wilaya = document.getElementById("wilaya" + num);
@@ -60,6 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!wilaya || !baladiya) return;
 
+    // تعبئة الولايات مباشرة
     fillWilayas(wilaya);
 
     wilaya.addEventListener("change", function () {
@@ -84,7 +84,8 @@ document.addEventListener("DOMContentLoaded", function () {
       // حساب المجموع
       if (msg) {
         var delivery = DELIVERY_PRICES[wilaya.value] || 0;
-        msg.innerHTML = "المجموع: " + (basePrice + delivery) + " دج";
+        msg.innerHTML =
+          "المجموع: " + (basePrice + delivery) + " دج";
       }
     });
   }
@@ -98,7 +99,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /* ===============================
-   إرسال الطلب (مضمون)
+   إرسال الطلب (Image Beacon)
+   ⚠️ لازم تكون خارج DOMContentLoaded
    =============================== */
 function sendOrder(id, price, age) {
 
@@ -117,34 +119,22 @@ function sendOrder(id, price, age) {
   msgBox.innerHTML = "⏳ جاري إرسال الطلب...";
   msgBox.style.color = "black";
 
-  var data = {
-    name: name,
-    phone: phone,
-    wilaya: wilaya,
-    baladiya: baladiya,
-    product: "ملابس أطفال",
-    age: age,
-    price: price,
-    pay: "الدفع عند الاستلام"
-  };
+  // إرسال الطلب (بدون fetch)
+  var img = new Image();
+  img.src =
+    WEB_APP_URL +
+    "?name=" + encodeURIComponent(name) +
+    "&phone=" + encodeURIComponent(phone) +
+    "&wilaya=" + encodeURIComponent(wilaya) +
+    "&baladiya=" + encodeURIComponent(baladiya) +
+    "&age=" + encodeURIComponent(age) +
+    "&price=" + encodeURIComponent(price) +
+    "&t=" + Date.now();
 
-  fetch(WEB_APP_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  })
-  .then(function () {
-    msgBox.innerHTML = "✅ تم إرسال الطلب بنجاح";
-    msgBox.style.color = "green";
+  msgBox.innerHTML = "✅ تم إرسال الطلب بنجاح";
+  msgBox.style.color = "green";
 
-    document.getElementById("name" + id).value = "";
-    document.getElementById("phone" + id).value = "";
-  })
-  .catch(function () {
-    msgBox.innerHTML = "⚠️ تعذر الإرسال، جرّب متصفح آخر";
-    msgBox.style.color = "red";
-  });
+  // تنظيف الحقول
+  document.getElementById("name" + id).value = "";
+  document.getElementById("phone" + id).value = "";
 }
