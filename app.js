@@ -83,8 +83,8 @@ const WEB_APP_URL =
      التشغيل (Init)
      =============================== */
 
-  bindProduct(1, 2500);
-  bindProduct(2, 3000);
+  bindProduct(1, 3200);
+  bindProduct(2, 2900);
   // أضف منتجات أخرى هنا
 
 });
